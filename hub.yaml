@@ -1,0 +1,16 @@
+---
+version: 1
+kind: stack
+meta:
+  name: scratch:1
+  brief: An overlay stack
+components: []
+requires:
+  - aws
+  - kubernetes
+lifecycle:
+  verbs:
+    - deploy
+    - undeploy
+  order: []
+outputs: []

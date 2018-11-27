@@ -1,0 +1,11 @@
+---
+parameters:
+- name: kubernetes.api
+  kind: user
+  parameters:
+  - name: caCert
+    fromEnv: KUBERNETES_API_CA_CERT
+  - name: clientCert
+    fromEnv: KUBERNETES_API_CLIENT_CERT
+  - name: clientKey
+    fromEnv: KUBERNETES_API_CLIENT_KEY

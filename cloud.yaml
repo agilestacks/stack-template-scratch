@@ -1,0 +1,14 @@
+---
+parameters:
+- name: cloud.kind
+  value: aws
+- name: dns.domain
+  kind: user
+  fromEnv: DOMAIN_NAME
+- name: terraform.bucket
+  kind: user
+  parameters:
+  - name: name
+    fromEnv: STATE_BUCKET
+  - name: region
+    fromEnv: STATE_REGION

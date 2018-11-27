@@ -1,0 +1,19 @@
+export AWS_AZ='us-east-2c'
+export AWS_DEFAULT_REGION='us-east-2'
+export BASE_DOMAIN='cloud-account-name.superhub.io'
+# Use `hub api environment get` to obtain Dex parameters
+# You must have Write or Admin role on the Environment assigned to see them
+# These are not strictly necessary as Platform stack provides Dex integrated with Okta
+export DEX_OKTA_APP_CLIENT_ID='unset'
+export DEX_OKTA_APP_CLIENT_SECRET='unset'
+export DEX_OKTA_APP_ID='unset'
+export DEX_OKTA_APP_ISSUER='unset'
+export DOMAIN_NAME='platform.cloud-account-name.superhub.io.yaml'
+export KEYPAIR='agilestacks'
+export NAME='components'
+export PLATFORM_PROVIDES='ecr,tiller,ingress,kubernetes,docker-registry,kubernetes-dashboard'
+export PLATFORM_STATE_FILES='s3://agilestacks.cloud-account-name.superhub.io/platform.cloud-account-name.superhub.io/hub/kubernetes-platform/hub.state'
+export STACK_NAME='components-overlay'
+export STACK_PARAMS='params/components@platform.cloud-account-name.superhub.io.yaml'
+export STATE_BUCKET='agilestacks.cloud-account-name.superhub.io'
+export STATE_REGION='us-east-2'

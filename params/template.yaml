@@ -1,0 +1,6 @@
+---
+parameters:
+  - name: component.efs
+    parameters:
+      - name: sgs
+        value: '${cloud.vpc.worker.sg.id}'
