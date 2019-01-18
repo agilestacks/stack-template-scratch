@@ -42,13 +42,13 @@ endif
 endif
 endif
 
-.PHONY: $(RESTORE_BUNDLE_FILE)
-
-$(RESTORE_PARAMS_FILE): $(RESTORE_BUNDLE_FILE)
+ifeq (,$(wildcard $(RESTORE_BUNDLE_FILE)))
+$(RESTORE_PARAMS_FILE):
 	@echo --- > $(RESTORE_PARAMS_FILE)
-	@if test -f $(RESTORE_BUNDLE_FILE); then \
-		$(hub) backup unbundle $(RESTORE_BUNDLE_FILE) -o $(RESTORE_PARAMS_FILE); \
-	fi
+else
+$(RESTORE_PARAMS_FILE): $(RESTORE_BUNDLE_FILE)
+	$(hub) backup unbundle $(RESTORE_BUNDLE_FILE) -o $(RESTORE_PARAMS_FILE)
+endif
 
 $(ELABORATE_FILE_FS): hub.yaml cloud.yaml $(TEMPLATE_PARAMS) $(STACK_PARAMS) $(RESTORE_PARAMS_FILE) params/user.yaml
 	$(hub) elaborate \
