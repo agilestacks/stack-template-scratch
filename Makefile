@@ -8,12 +8,25 @@ STATE_REGION ?= us-east-2
 
 STACK_NAME ?= overlay
 
+STORAGE_KIND    ?= s3
+STATE_CONTAINER ?= agilestacks
+
+STATE_PATH := $(DOMAIN_NAME)/hub/$(STACK_NAME)-$(NAME)/hub
 ELABORATE_FILE_FS := hub.yaml.elaborate
-ELABORATE_FILE_S3 := s3://$(STATE_BUCKET)/$(DOMAIN_NAME)/hub/$(STACK_NAME)-$(NAME)/hub.elaborate
-ELABORATE_FILES   := $(ELABORATE_FILE_FS),$(ELABORATE_FILE_S3)
-STATE_FILE_FS     := hub.yaml.state
-STATE_FILE_S3     := s3://$(STATE_BUCKET)/$(DOMAIN_NAME)/hub/$(STACK_NAME)-$(NAME)/hub.state
-STATE_FILES       := $(STATE_FILE_FS),$(STATE_FILE_S3)
+ifeq (az,$(STORAGE_KIND))
+ELABORATE_FILE_CLOUD := $(STORAGE_KIND)://$(STATE_BUCKET)/$(STATE_CONTAINER)/$(STATE_PATH).elaborate
+else
+ELABORATE_FILE_CLOUD := $(STORAGE_KIND)://$(STATE_BUCKET)/$(STATE_PATH).elaborate
+endif
+ELABORATE_FILES := $(ELABORATE_FILE_FS),$(ELABORATE_FILE_CLOUD)
+
+STATE_FILE_FS := hub.yaml.state
+ifeq (az,$(STORAGE_KIND))
+STATE_FILE_CLOUD := $(STORAGE_KIND)://$(STATE_BUCKET)/$(STATE_CONTAINER)/$(STATE_PATH).state
+else
+STATE_FILE_CLOUD := $(STORAGE_KIND)://$(STATE_BUCKET)/$(STATE_PATH).state
+endif
+STATE_FILES := $(STATE_FILE_FS),$(STATE_FILE_CLOUD)
 
 TEMPLATE_PARAMS ?= params/template.yaml
 STACK_PARAMS    ?= params/$(DOMAIN_NAME).yaml
@@ -29,8 +42,10 @@ RESTORE_PARAMS_FILE ?= restore-params.yaml
 
 HUB_OPTS ?=
 
-hub ?= hub -d --aws_region $(STATE_REGION)
-aws ?= aws --region $(STATE_REGION)
+hub    ?= hub -d
+aws    ?= aws --region $(STATE_REGION)
+gsutil ?= gsutil
+az     ?= az
 
 ifdef HUB_TOKEN
 ifdef HUB_ENVIRONMENT
@@ -106,10 +121,18 @@ backup: $(ELABORATE_FILE_FS)
 .PHONY: backup
 
 remove_s3_state:
-	-$(aws) s3 rm $(STATE_FILE_S3)
+	-$(aws) s3 rm $(STATE_FILE_CLOUD)
 .PHONY: remove_s3_state
 
-clean: remove_s3_state
+remove_gs_state:
+	-$(gsutil) rm $(STATE_FILE_CLOUD)
+.PHONY: remove_gs_state
+
+remove_az_state:
+	-$(az) storage blob delete --account-name $(STATE_BUCKET) --container-name $(STATE_CONTAINER) --name $(STATE_PATH)
+.PHONY: remove_az_state
+
+clean: remove_$(STORAGE_KIND)_state
 	@rm -f hub.yaml.state hub.yaml.elaborate
 .PHONY: clean
 

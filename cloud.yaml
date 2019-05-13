@@ -1,7 +1,6 @@
 ---
 parameters:
 - name: cloud.kind
-  value: aws
 - name: dns.domain
   kind: user
   fromEnv: DOMAIN_NAME

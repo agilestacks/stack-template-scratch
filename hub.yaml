@@ -6,7 +6,6 @@ meta:
   brief: An overlay stack
 components: []
 requires:
-  - aws
   - kubernetes
 lifecycle:
   verbs:
