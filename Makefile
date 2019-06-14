@@ -50,7 +50,8 @@ az     ?= az
 ifdef HUB_TOKEN
 ifdef HUB_ENVIRONMENT
 ifdef HUB_STACK_INSTANCE
-HUB_LIFECYCLE_OPTS ?= --hub-environment "$(HUB_ENVIRONMENT)" --hub-stack-instance "$(HUB_STACK_INSTANCE)"
+HUB_LIFECYCLE_OPTS ?= --hub-environment "$(HUB_ENVIRONMENT)" --hub-stack-instance "$(HUB_STACK_INSTANCE)" \
+	--hub-sync --hub-sync-skip-parameters-and-oplog
 endif
 endif
 endif
