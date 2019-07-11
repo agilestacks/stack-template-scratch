@@ -9,5 +9,20 @@ parameters:
   parameters:
   - name: name
     fromEnv: STATE_BUCKET
+  - name: container
+    default: agilestacks
+    fromEnv: STATE_CONTAINER
   - name: region
     fromEnv: STATE_REGION
+- name: cloud.azureClientId
+  fromEnv: AZURE_CLIENT_ID
+  empty: allow
+- name: cloud.azureTenantId
+  fromEnv: AZURE_TENANT_ID
+  empty: allow
+- name: cloud.azureClientSecret
+  fromEnv: AZURE_CLIENT_SECRET
+  empty: allow
+- name: cloud.azureSubscriptionId
+  fromEnv: AZURE_SUBSCRIPTION_ID
+  empty: allow
