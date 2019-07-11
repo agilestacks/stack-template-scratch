@@ -31,7 +31,7 @@ STATE_FILES := $(STATE_FILE_FS),$(STATE_FILE_CLOUD)
 TEMPLATE_PARAMS ?= params/template.yaml
 STACK_PARAMS    ?= params/$(DOMAIN_NAME).yaml
 
-PLATFORM_PROVIDES    ?= tiller
+PLATFORM_PROVIDES    ?=
 PLATFORM_STATE_FILES ?=
 
 COMPONENT :=
@@ -67,7 +67,7 @@ endif
 $(ELABORATE_FILE_FS): hub.yaml cloud.yaml $(TEMPLATE_PARAMS) $(STACK_PARAMS) $(RESTORE_PARAMS_FILE) params/user.yaml
 	$(hub) elaborate \
 		hub.yaml cloud.yaml $(TEMPLATE_PARAMS) $(STACK_PARAMS) $(RESTORE_PARAMS_FILE) params/user.yaml \
-		-p $(PLATFORM_PROVIDES) \
+		$(if $(PLATFORM_PROVIDES),-p $(PLATFORM_PROVIDES),) \
 		$(if $(PLATFORM_STATE_FILES),-s $(PLATFORM_STATE_FILES),) \
 		$(HUB_OPTS) \
 		-o $(ELABORATE_FILES)
