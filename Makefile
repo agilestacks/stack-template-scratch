@@ -118,7 +118,9 @@ endif
 
 backup: $(ELABORATE_FILE_FS)
 	$(hub) backup create --json $(ELABORATE_FILES) -s $(STATE_FILES) -o "$(BACKUP_BUNDLE_FILE)" -c "$(COMPONENTS)"
-	@$(if $(BACKUP_BUNDLE_FILE),echo "--- backup bundle"; cat $(BACKUP_BUNDLE_FILE); echo,)
+	@echo '--- backup bundle'
+	@zcat $(BACKUP_BUNDLE_FILE)
+	@echo
 .PHONY: backup
 
 remove_s3_state:
