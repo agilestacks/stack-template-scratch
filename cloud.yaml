@@ -11,6 +11,7 @@ parameters:
     fromEnv: STATE_BUCKET
   - name: container
     default: agilestacks
+    empty: allow
     fromEnv: STATE_CONTAINER
   - name: region
     fromEnv: STATE_REGION
