@@ -28,7 +28,7 @@ if  test -z "${AWS_PROFILE}" && \
 fi
 
 envfile=$(mktemp)
-env | grep -E '^(AWS_|TF_|TERM=|LANG=|LC_)' >"$envfile"
+env | grep -E '^(AWS_|GOOGLE_|AZURE_|TF_|TERM=|LANG=|LC_)' >"$envfile"
 envadd=""
 if test -s "$envfile"; then
     envadd="--env-file $envfile"
@@ -41,9 +41,13 @@ if test -f $docker_config && grep osxkeychain $docker_config >/dev/null; then
     maybe_docker_config="-v $pruned_docker_config:$HOME/.docker/config.json"
 fi
 
-docker pull "$IMAGE:$IMAGE_VERSION" 2> /dev/null || true
+# no pull if version is based on commit hashes
+if test -n "$(echo $IMAGE_VERSION | sed -E -e 's/[0-9a-f]{7}-[0-9a-f]{7}//')"; then
+    docker pull "$IMAGE:$IMAGE_VERSION" 2>/dev/null || true
+fi
 docker run -ti --rm \
     -h toolbox-"$(tty|sed -e 's|/dev/||')" \
+    -e TMPDIR=/tmp \
     -e "USER=$USER" \
     -e "UID=$(id -u)" \
     -e "GID=$(id -g)" \
