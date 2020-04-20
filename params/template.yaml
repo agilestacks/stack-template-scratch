@@ -14,21 +14,3 @@ parameters:
     parameters:
       - name: name
         value: postgresql-rds-pgweb
-  - name: component.postgresql
-    component: postgresql-pgweb
-    parameters:
-      - name: database
-        value: '${component.postgresql.database|postgresql}'
-        kind: link
-      - name: password
-        value: '${component.postgresql.password|postgresql}'
-        kind: link
-  - name: component.postgresql
-    component: postgresql-rds-pgweb
-    parameters:
-      - name: database
-        value: '${component.postgresql.database|postgresql-rds}'
-        kind: link
-      - name: password
-        value: '${component.postgresql.password|postgresql-rds}'
-        kind: link
