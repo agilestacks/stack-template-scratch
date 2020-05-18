@@ -5,11 +5,10 @@ meta:
   name: scratch:1
   brief: An overlay stack
 components: []
-requires:
-  - kubernetes
+requires: []
 lifecycle:
   verbs:
-    - deploy
-    - undeploy
+  - deploy
+  - undeploy
   order: []
 outputs: []
